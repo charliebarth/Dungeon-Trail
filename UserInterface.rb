@@ -26,7 +26,7 @@ class UserInterface
   
     def start
 
-      puts "Welcome to (Dungeon Trial)!"
+      puts "Welcome to Dungeon Trail!"
       puts "Please start by naming your character."
       name = gets.chomp
       @current_player = Character.new(name)
@@ -49,11 +49,11 @@ class UserInterface
       case input
       
       when "List"
-        puts "Here is a list of possible commands: Buy, Move, Search, Attack, Inventory, Use, End"
+        puts "Here is a list of possible commands: Buy, Move, Search, Attack, Inventory, Use, End, Health"
         self.call
       
       when "Buy"
-        puts "Please type in the complete name of the item you would like the buy or type 'Start Quest' to being the adventure."
+        puts "Please type in the complete name of the item you would like the buy or type 'Begin Quest' to being the adventure."
         @current_player.buy_item(gets.chomp)
         if self.game_over? == "Won"
           puts "You beat the game. To exit type 'End'."
@@ -143,7 +143,7 @@ class UserInterface
         if @current_player.current_armor(gets.chomp)
         else
           puts "You put in an invalid item. Try Again."
-          @current_player.current_weapon(gets.chomp)
+          @current_player.current_current_armor(gets.chomp)
         end
         if @current_player.weapon != nil && @current_player.armor != nil
           puts "Excellent, let's begin!"
@@ -156,7 +156,6 @@ class UserInterface
 
       when "End"
         if self.game_over? == "Lost"
-          puts "You lost."
           begin
             exit
           rescue SystemExit
@@ -170,8 +169,8 @@ class UserInterface
         end
 
       else
-        if self.game_over? == "Won"
-          puts "You beat the game. To exit type 'End'."
+        if self.game_over?
+          puts "The game isn't over yet."
         end
         self.call
       end
@@ -195,7 +194,7 @@ class UserInterface
         #end
       end
       if self.game_over?
-        puts "You killed the monster and won the game. You can continue to play or end the game by typing 'End'."
+        puts "You killed the #{monster.name} and won the game. You can continue to play or end the game by typing 'End'."
       else
         puts "You killed the monster."
       end
@@ -216,9 +215,11 @@ class UserInterface
     def game_over?
       if @current_player.status == "Dead"
         puts "You died. Game Over"
-        "Lost"
+        return "Lost"
       elsif @goblin.status == "Dead" && @troll.status == "Dead"
-        "Won"
+        return "Won"
+      else
+        return true
       end
     end
   

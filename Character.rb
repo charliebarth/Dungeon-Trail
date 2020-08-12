@@ -74,7 +74,7 @@ class Character < Parent
     end 
     
     def current_weapon(item)
-      Equipment.all.each do |x|
+      @inventory.each do |x|
         if x.name == item
           if x.damage != nil
             @weapon = x
